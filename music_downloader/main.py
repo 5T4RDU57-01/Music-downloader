@@ -1,5 +1,5 @@
 from argparse import ArgumentParser, Namespace
-from helpers import download_video, download_playlist, download_from_file, search_and_download, validate_url, validate_file
+from helpers import Downloader, validate_url, validate_file
 
 
 def main():
@@ -13,10 +13,14 @@ def main():
 
 # Downloads the video, playlist, videos from a file or from a searh
 def do_everything(args: Namespace) -> int:
+
+    change_ext = not args.raw
+
+    down = Downloader(change_ext=change_ext)
     # <VIDEO>
     if args.video:
         if validate_url(args.video[0]):
-            download_video(args.video[0])
+            down.download_video(args.video[0])
         else:
             return 1
     # <!VIDEO>
@@ -24,7 +28,7 @@ def do_everything(args: Namespace) -> int:
     # <PLAYLIST>
     if args.playlist:
         if validate_url(args.playlist[0]):
-            download_playlist(args.playlist[0])
+            down.download_playlist(args.playlist[0])
         else:
             return 1
     # <!PLAYLIST>
@@ -32,14 +36,14 @@ def do_everything(args: Namespace) -> int:
     # <FILE>
     if args.file:
         if validate_file(args.file[0]):
-            download_from_file(args.file[0])
+            down.download_from_file(args.file[0])
         else:
             return 2
     # <!FILE>
         
     # <SEARCH>
     if args.download:
-        search_and_download(args.download[0])
+        down.search_and_download(args.download[0])
     # <!SEARCH>
 
     return 0 
@@ -80,6 +84,15 @@ def get_args() -> Namespace:
                        metavar=("songname"), 
                        nargs=1)
     # <!SEARCH>
+
+    # <DOWNLOAD AS MP4>
+    parser.add_argument("-r", "--raw",
+                        help="Download the video as MP4",
+                        action="store_true",
+                        default=False
+                        )
+    # <DOWNLOAD AS MP4>
+    
 
 
 

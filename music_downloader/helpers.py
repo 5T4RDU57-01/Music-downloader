@@ -1,80 +1,99 @@
-from youtubesearchpython import VideosSearch
-from pytube import YouTube, Playlist
+from pytube import YouTube, Playlist, Search
 from re import match
 from os.path import basename, splitext, exists
 from os import rename
 
-# Download a video with the given URL
-# Is also used in the download playlist function, the video object can be given as an arg
-def download_video(url:str=None, playlist_vid=None) -> int:
-    try:
-        
-        if url is not None:
-            video = YouTube(url)
-        
-        elif playlist_vid is not None:
-            video = playlist_vid
+
+class Downloader():
+    def __init__(self, change_ext=True) -> None:
+        self.change_ext = change_ext
+
+    # Download a video with the given URL
+    # Is also used in the download playlist function, the video object can be given as an arg
+    def download_video(self, url:str=None, youtube_object=None) -> int:
+        try:
             
-        print(f'\nDownloading {video.title}')
-        stream = video.streams.filter(only_audio=True).first()
+            if url is not None:
+                video = YouTube(url)
+            
+            elif youtube_object is not None:
+                video = youtube_object
+                
+            print(f'\nDownloading {video.title}')
+            
+            if self.change_ext:
+                stream = video.streams.filter(only_audio=True).first()
+            else:
+                try:
+                    stream = video.streams.filter(file_extension="mp4").get_by_resolution("720p")
+                except:
+                    pass
+                
+            if stream is None:
+                print(f"Could not download {video.title} in Mp4, downloading in mp3")
+                stream = video.streams.filter(only_audio=True).first()
+                
+            downloaded_file = stream.download()
+            
+            if self.change_ext:
+                self.change_extention_to_mp3(downloaded_file)
+            
+            print('Download successful!\n')
+            
+        except KeyError:
+            return 1
         
-        downloaded_file = stream.download()
-        change_extention_to_mp3(downloaded_file)
-        print('Download successful!\n')
+        return 0
+
+
+    # Download all the videos in a playlist with the given URL
+    def download_playlist(self, url:str) -> int:
+
+        try:
+            pl = Playlist(url)
+        except:
+            return 1
         
-    except KeyError:
-        return 1
-    
-    return 0
+        for vid in pl.videos:
+            self.download_video(youtube_object=vid)
+            
+        return 0
+                    
+
+    # Read a text file with the songnames (seperated by newlines)
+    # and download all of them
+    def download_from_file(self, file: str, chnage_ext=True) -> int:
+        songs = None
+
+        with open(file, 'r') as songfile:
+            songs = songfile.readlines()
+
+        for song in songs:
+            self.search_and_download(song=song)
+
+        return 0
 
 
-# Download all the videos in a playlist with the given URL
-def download_playlist(url:str) -> int:
-
-    try:
-        pl = Playlist(url)
-    except:
-        return 1
-    
-    for vid in pl.videos:
-        download_video(playlist_vid=vid)
+    # Search a song on youtube an download it
+    def search_and_download(self, song: str, chnage_ext=True) -> int:
         
-    return 0
-                 
-
-# Read a text file with the songnames (seperated by newlines)
-# and download all of them
-def download_from_file(file: str) -> int:
-    songs = None
-
-    with open(file, 'r') as songfile:
-        songs = songfile.readlines()
-
-    for song in songs:
-        search_and_download(song=song)
-
-    return 0
-
-
-# Search a song on youtube an download it
-def search_and_download(song: str) -> int:
+        result = (Search(f"{song} song").results)[0]
     
-    result = VideosSearch(song + 'song' , limit=1).result()
-
-    id = (result['result'])[0]['id']
-    url = f'https://www.youtube.com/watch?v={id}'
-    download_video(url=url)
-    return 0
+        self.download_video(youtube_object=result)
+        return 0
 
 
-# Chnage the extention of a file to MP3
-def change_extention_to_mp3(file: str) -> None:
+    # Chnage the extention of a file to MP3
+    @staticmethod
+    def change_extention_to_mp3(file: str) -> None:
 
-    file = basename(file)
+        file = basename(file)
 
-    base, ext = splitext(file)
-    new_file = base + '.mp3'
-    rename(file, new_file)
+        base, ext = splitext(file)
+        new_file = base + '.mp3'
+        rename(file, new_file)
+
+
 
 
 # Validate a youtube URL (can be playlist or video)

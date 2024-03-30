@@ -1,64 +1,58 @@
-# YouTube Downloader Tool
+# YouTube Downloader
 
-This command-line tool written in Python allows users to download YouTube videos and playlists. It supports downloading videos from URLs, playlists, video names listed in a file, and searching and downloading videos by name.
+## Introduction
+This command-line tool allows you to download YouTube videos, playlists, songs from a file, or search and download directly. It is developed using Python and the `pytube` library.
+
+## Installation
+1. Clone this repository to your local machine.
+2. Make sure you have Python installed.
+3. Install the required dependencies using pip:
+
+pip install -r requirements.txt
+
 
 ## Usage
-
-### Prerequisites
-
-- Python 3.x
-- `pytube` library (`pip install pytube`)
-- `youtubesearchpython` library (`pip install youtubesearchpython`)
+Navigate to the directory where the tool is located and run the `main.py` script using Python.
 
 ### Command Line Arguments
+- `-v, --video`: Downloads a single video from the provided YouTube URL.
+- `-p, --playlist`: Downloads all videos in the provided YouTube playlist URL.
+- `-f, --file`: Reads a text file containing song names (separated by newlines) and downloads them.
+- `-d, --download`: Searches for a song on YouTube and downloads it.
+- `-r, --raw`: (Optional) Download videos in MP4 format instead of MP3.
 
-- `-v`, `--video <url>`: Download a YouTube video by URL.
-- `-p`, `--playlist <url>`: Download a YouTube playlist by URL.
-- `-f`, `--file <filename>`: Read video names from a file and download them.
-- `-d`, `--download <songname>`: Search for a video by name and download it.
+### Examples
 
-### Example Usage
-
-# Download a video:
+#1. Download a video:
 
 python main.py -v https://www.youtube.com/watch?v=VIDEO_ID
 
 
-# Download a playlist:
+# 2. Download a playlist:
 
 python main.py -p https://www.youtube.com/playlist?list=PLAYLIST_ID
 
 
-# Download videos from a file:
+# 3. Download songs from a file:
 
-python main.py -f videos.txt
+python main.py -f songs.txt
 
 
-# Search and download a video:
+# 4. Search and download a song:
 
 python main.py -d "Song Name"
 
 
-## Files
+# 5. Download videos in MP4 format:
 
-- `main.py`: Contains the main program logic and command-line argument parsing.
-- `helpers.py`: Contains functions for downloading videos, playlists, and searching for videos by name.
+python main.py -v https://www.youtube.com/watch?v=VIDEO_ID -r
 
-## How It Works
 
-- The `main.py` file handles command-line arguments using the `argparse` library.
-- Video downloading functionality is implemented in the `helpers.py` file using the `pytube` library for downloading videos and playlists and the `youtubesearchpython` library for searching videos by name.
+### Additional Notes
+- Make sure you have a stable internet connection.
+- The tool will automatically convert videos to MP3 format unless the `-r` flag is used.
+- Ensure that the provided URLs are valid YouTube URLs.
 
-## Usage Notes
-
-- Make sure to provide valid YouTube URLs for videos and playlists.
-- Video names should be listed one per line in the input file for the `-f` option.
-- Use double quotes (`"`) around song names when using the `-d` option to search by name.
-
-## Running the Program
-
-1. Install Python 3.x, `pytube`, and `youtubesearchpython` libraries.
-2. Open a terminal or command prompt.
-3. Navigate to the directory containing `main.py` and `helpers.py`.
-4. Use the command-line arguments as described above to download YouTube videos and playlists.
+## Author
+Vivian
 
