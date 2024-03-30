@@ -62,7 +62,7 @@ class Downloader():
 
     # Read a text file with the songnames (seperated by newlines)
     # and download all of them
-    def download_from_file(self, file: str, chnage_ext=True) -> int:
+    def download_from_file(self, file: str) -> int:
         songs = None
 
         with open(file, 'r') as songfile:
@@ -75,7 +75,7 @@ class Downloader():
 
 
     # Search a song on youtube an download it
-    def search_and_download(self, song: str, chnage_ext=True) -> int:
+    def search_and_download(self, song: str) -> int:
         
         result = (Search(f"{song} song").results)[0]
     
