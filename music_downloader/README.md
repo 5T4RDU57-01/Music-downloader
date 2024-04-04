@@ -10,7 +10,7 @@ This command-line tool allows you to download YouTube videos, playlists, songs f
 
 FFMPEG installation link: https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z
 
-3. Install the required dependencies using pip:
+4. Install the required dependencies using pip:
 
 pip install -r requirements.txt
 
