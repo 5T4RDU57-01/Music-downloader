@@ -6,7 +6,11 @@ This command-line tool allows you to download YouTube videos, playlists, songs f
 ## Installation
 1. Clone this repository to your local machine.
 2. Make sure you have Python installed.
-3. Install the required dependencies using pip:
+3. Make sure you have FFMPEG installed and the /bin folder added to your path
+
+FFMPEG installation link: https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z
+
+4. Install the required dependencies using pip:
 
 pip install -r requirements.txt
 
@@ -49,6 +53,7 @@ python main.py -v https://www.youtube.com/watch?v=VIDEO_ID -r
 
 
 ### Additional Notes
+- Make sure you installed FFMPEG and added the /bin folder to your path
 - Make sure you have a stable internet connection.
 - The tool will automatically convert videos to MP3 format unless the `-r` flag is used.
 - Ensure that the provided URLs are valid YouTube URLs.
