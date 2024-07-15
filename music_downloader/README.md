@@ -1,16 +1,12 @@
 # YouTube Downloader
 
 ## Introduction
-This command-line tool allows you to download YouTube videos, playlists, songs from a file, or search and download directly. It is developed using Python and the `pytube` library.
+This command-line tool allows you to download YouTube videos, playlists, songs from a file, or search and download directly. It is developed using Python and the `pytubefix` library.
 
 ## Installation
 1. Clone this repository to your local machine.
 2. Make sure you have Python installed.
-3. Make sure you have FFMPEG installed and the /bin folder added to your path
-
-FFMPEG installation link: https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z
-
-4. Install the required dependencies using pip:
+3. Install the required dependencies using pip:
 
 pip install -r requirements.txt
 

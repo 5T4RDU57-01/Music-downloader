@@ -1,4 +1,5 @@
-from pytube import YouTube, Playlist, Search
+from pytubefix import YouTube, Playlist, Search
+from pytubefix.cli import on_progress
 from re import match
 from os.path import basename, splitext, exists
 from os import remove
@@ -15,7 +16,7 @@ class Downloader:
 
         try:
             if url is not None:
-                video = YouTube(url)
+                video = YouTube(url, on_complete_callback=on_progress)
 
             elif youtube_object is not None:
                 video = youtube_object
@@ -36,10 +37,10 @@ class Downloader:
                 print(f"Could not download {video.title} in Mp4, downloading in mp3")
                 stream = video.streams.filter(only_audio=True).first()
 
-            downloaded_file = stream.download()
+            stream.download(mp3=self.change_ext)
 
-            if self.change_ext:
-                self.change_extention_to_mp3(downloaded_file)
+            # if self.change_ext:
+            #     self.change_extention_to_mp3(downloaded_file)
 
         except KeyError:
             return 1
