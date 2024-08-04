@@ -16,26 +16,24 @@ class Downloader:
 
         try:
             if url is not None:
-                video = YouTube(url, on_complete_callback=on_progress)
+                video = YouTube(url)
 
-            elif youtube_object is not None:
+            if youtube_object is not None:
                 video = youtube_object
 
             print(f"\nDownloading {video.title}")
 
             if self.change_ext:
-                stream = video.streams.filter(only_audio=True).first()
+                stream = video.streams.get_audio_only()
             else:
                 try:
-                    stream = video.streams.filter(
-                        file_extension="mp4"
-                    ).get_by_resolution("720p")
+                    stream = video.streams.get_by_resolution()
                 except:
                     pass
 
             if stream is None:
                 print(f"Could not download {video.title} in Mp4, downloading in mp3")
-                stream = video.streams.filter(only_audio=True).first()
+                stream = video.streams.get_audio_only()
 
             stream.download(mp3=self.change_ext)
 
